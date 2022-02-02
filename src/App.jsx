@@ -7,6 +7,7 @@ function App() {
   const [task, setTask] = useState('');
   const [listTasks, setListTasks] = useState([]);
   const [editionMode, setEditionMode] = useState(false);
+  const [idEdit, setIdEdit] = useState('');
 
   const saveData = (e) => {
     e.preventDefault();
@@ -34,8 +35,27 @@ function App() {
     console.log(item)
     setEditionMode(true);
     setTask(item.task)
+    setIdEdit(item.id)
   }
 
+  const editDataTask = (e) => {
+    e.preventDefault();
+    if(!task.trim()){
+      console.log('not add task')
+      return
+    }
+    const arrayEdit = listTasks.map(
+      item => item.id === idEdit ? {id,task} : item
+    )
+
+    setListTasks(arrayEdit);
+    setEditionMode(false);
+    setTask('')
+    setIdEdit('')
+
+
+
+  }
 
   return (
     <div className="container">
@@ -71,7 +91,7 @@ function App() {
               (editionMode) ? "Form Edit" : 'Form Add' 
             }
           </h4>
-          <form onSubmit={saveData} action="">
+          <form onSubmit={editionMode ? editDataTask : saveData} action="">
             <input
               type="text" 
               className="form-control mb-2" 
