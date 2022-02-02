@@ -114,7 +114,7 @@ function App() {
             />
             {
               editionMode ? (
-                <button className="btn btn-warning w-100" type='submit'>Edit</button>
+                <button className="btn btn-warning w-100" type='submit'>Editar</button>
               ) :  (<button className="btn btn-dark w-100" type='submit'>Add</button>)
             }
            
