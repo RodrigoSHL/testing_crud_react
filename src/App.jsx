@@ -8,11 +8,13 @@ function App() {
   const [listTasks, setListTasks] = useState([]);
   const [editionMode, setEditionMode] = useState(false);
   const [idEdit, setIdEdit] = useState('');
+  const [error, setError] = useState(null);
 
   const saveData = (e) => {
     e.preventDefault();
     if(!task.trim()){
       console.log('not add task')
+      setError('please, write a task');
       return
     }
 
@@ -23,7 +25,7 @@ function App() {
     e.target.reset();
 
     setTask('');
-
+    setError(null);
   }
 
   const deleteData = idTask => {
@@ -42,8 +44,10 @@ function App() {
     e.preventDefault();
     if(!task.trim()){
       console.log('not add task')
+      setError('please, write a task');
       return
     }
+
     const arrayEdit = listTasks.map(
       item => item.id === idEdit ? {id,task} : item
     )
@@ -52,9 +56,7 @@ function App() {
     setEditionMode(false);
     setTask('')
     setIdEdit('')
-
-
-
+    setError(null)
   }
 
   return (
@@ -66,7 +68,13 @@ function App() {
           <h4 className="text-center">Tasks list</h4>
           <ul className="list-group">
             {
-              listTasks.map((item) => (
+              listTasks.length === 0 ? (
+                <li className="group-item mt-2">
+                  No pending tasks
+                </li>
+
+              ) : (
+                listTasks.map((item) => (
                 <li key={item.id} className="group-item mt-2">
                   <span className="lead">{item.task}</span>
                   <button className="btn btn-danger btn-sm float-end mx-2"
@@ -81,6 +89,8 @@ function App() {
                   </button>
                 </li>
               ))
+              )
+              
             }
             
           </ul>
@@ -92,6 +102,9 @@ function App() {
             }
           </h4>
           <form onSubmit={editionMode ? editDataTask : saveData} action="">
+            {
+              error ? <span className='text-danger'>{error}</span> : null
+            }
             <input
               type="text" 
               className="form-control mb-2" 
